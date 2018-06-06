@@ -36,13 +36,12 @@ public class ChannelServer implements Runnable {
     }
 
     public void stop(){
-        if(!stop){
-            stop = true;
-        }
+        stop = true;
     }
 
+    @Override
     public void run() {
-        System.out.println("...");
+        System.out.println("server start...");
         while(!stop){
             try {
                 //1.阻塞超时
@@ -70,13 +69,14 @@ public class ChannelServer implements Runnable {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                System.exit(1);
             }
-            if(selector != null){
-                try {
-                    selector.close();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        }
+        if(selector != null){
+            try {
+                selector.close();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
@@ -95,14 +95,19 @@ public class ChannelServer implements Runnable {
                     SocketChannel sc = (SocketChannel) key.channel();
                     ByteBuffer buffer = ByteBuffer.allocate(1024);
                     int read = sc.read(buffer);
+                 
                     if(read > 0){
                         buffer.flip();
                         byte[] bytes = new byte[buffer.remaining()];
                         buffer.get(bytes);
                         String body = new String(bytes,"UTF-8");
-                        body = "this is body{}"+body;
-                        System.out.println(body);
-
+                        System.out.println("client"+body);
+                        if("ni hao a".equals(body)){
+                        	body = "en ni hao";
+                        }else{
+                        	body = "sorry wo bu hao";
+                        }
+           
                         doWrite(sc,body);
                     }
                 }
@@ -111,10 +116,16 @@ public class ChannelServer implements Runnable {
     }
 
     private void doWrite(SocketChannel sc,String body) throws IOException {
-        byte[] bytes = body.getBytes();
-        ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
-        buffer.put(bytes);
-        buffer.flip();
-        sc.write(buffer);
+    	if(body.length() >0 && body !=null){
+		    byte[] bytes = body.getBytes();
+	        ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
+	        buffer.put(bytes);
+	        buffer.flip();
+	        sc.write(buffer);
+	        if(!buffer.hasRemaining()){
+	        	 System.out.println("server send success");
+	        }
+	      
+    	}
     }
 }
