@@ -13,7 +13,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class NettyClient {
     
-    public void bind(String host,int port){
+    public void connect(String host,int port){
         NioEventLoopGroup worker = new NioEventLoopGroup();
 
         try {
@@ -29,8 +29,10 @@ public class NettyClient {
             ChannelFuture f = bootstrap.connect(host,port).sync();
             f.channel().closeFuture().sync();
         }catch (Exception e){
-            worker.shutdownGracefully();
-        }
+           
+        }finally {
+        	 worker.shutdownGracefully();
+		}
 
     }
 

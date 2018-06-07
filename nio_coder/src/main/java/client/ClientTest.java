@@ -6,7 +6,7 @@ package client;
 public class ClientTest {
     public static void main(String[] args) {
         String host = "127.0.0.1";
-        int port = 8888;
-        new NettyClient().bind(host,port);
+        int port = 8889;
+        new NettyClient().connect(host,port);
     }
 }

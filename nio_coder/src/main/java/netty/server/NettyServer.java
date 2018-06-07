@@ -21,13 +21,17 @@ public class NettyServer {
             bootstrap.group(boos,worker)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG,1024)
-                    .handler(new ChildChannelHandler());
+                    .childHandler(new ChildChannelHandler());
 
             ChannelFuture f = bootstrap.bind(port).sync();
             f.channel().closeFuture().sync();
         }catch (InterruptedException  e){
-            boos.shutdownGracefully();
+            
+        }finally{
+        	boos.shutdownGracefully();
             worker.shutdownGracefully();
         }
+        
     }
+    
 }

@@ -17,12 +17,14 @@ public class HanlderClinet extends ChannelHandlerAdapter {
 
     public HanlderClinet(){
         String msg = "server ni hao a";
-        message = Unpooled.copiedBuffer(msg.getBytes());
+        byte[] req = msg.getBytes();
+        message = Unpooled.buffer(req.length);
+        message.writeBytes(req);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.write(message);
+        ctx.writeAndFlush(message);
     }
 
     @Override
