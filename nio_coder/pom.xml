@@ -8,5 +8,13 @@
     <artifactId>nio_coder</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>5.0.0.Alpha1</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,4 +1,4 @@
-package com.maomi.coder;
+package com.maomi.coder.server;
 
 import com.maomi.coder.server.ChannelServer;
 
