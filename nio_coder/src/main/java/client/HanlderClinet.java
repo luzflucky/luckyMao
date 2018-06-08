@@ -13,31 +13,42 @@ import io.netty.util.concurrent.EventExecutorGroup;
  */
 public class HanlderClinet extends ChannelHandlerAdapter {
 
-    private ByteBuf message;
+    private int count = 0;
+
+    private byte[] req ;
 
     public HanlderClinet(){
-        String msg = "server ni hao a";
-        byte[] req = msg.getBytes();
-        message = Unpooled.buffer(req.length);
-        message.writeBytes(req);
+//        req = ("server ni hao a"+System.getProperty("line.separator")).getBytes();
+        req = ("server ni hao a $_").getBytes();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(message);
+        ByteBuf message = null;
+        for (int i=0;i<10;i++){
+            message = Unpooled.buffer(req.length);
+            message.writeBytes(req);
+            ctx.writeAndFlush(message);
+        }
+
+//            message = Unpooled.buffer(req.length);
+//            message.writeBytes(req);
+//            ctx.writeAndFlush(message);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] bytes = new byte[buf.readableBytes()];
-        buf.readBytes(bytes);
-        String body = new String(bytes,"UTF-8");
-        System.out.println(body);
+//        ByteBuf buf = (ByteBuf) msg;
+//        byte[] bytes = new byte[buf.readableBytes()];
+//        buf.readBytes(bytes);
+//        String body = new String(bytes,"UTF-8");
+//        System.out.println(body);
+        System.out.println("this is server send:"+msg+" count:"+count++);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
         ctx.close();
     }
 }

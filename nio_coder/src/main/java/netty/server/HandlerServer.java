@@ -17,20 +17,19 @@ public class HandlerServer extends ChannelHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws UnsupportedEncodingException {
-        ByteBuf buffer = (ByteBuf) msg;
-        byte[] bytes = new byte[buffer.readableBytes()];
-        buffer.readBytes(bytes);
-        String body = new String(bytes,"UTF-8");
-        System.out.println("this is client send:"+body);
-        String time = "client ni hao a";
+//        ByteBuf buffer = (ByteBuf) msg;
+//        byte[] bytes = new byte[buffer.readableBytes()];
+//        buffer.readBytes(bytes);
+//        String body = new String(bytes,"UTF-8");
+//        System.out.println("this is client send:"+body);
+//        String time = "client ni hao a";
+        System.out.println("this is client send:"+msg);
+//        String time = "client ni hao a"+System.getProperty("line.separator");
+        String time = "client ni hao a $_";
         ByteBuf buf = Unpooled.copiedBuffer(time.getBytes());
-        ctx.write(buf);
+        ctx.writeAndFlush(buf);
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.flush();
-    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
